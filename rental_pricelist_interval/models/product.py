@@ -18,6 +18,7 @@ class ProductPricelistItem(models.Model):
         if self.product_id.rented_product_id:
             if self.product_id.uom_id.id == uom_interval.id:
                 self.interval_item_id = self.product_id.rented_product_id.id
+        return True
 
 
 class ProductPricelist(models.Model):
@@ -89,14 +90,12 @@ class ProductProduct(models.Model):
     def write(self, vals):
         res = super(ProductProduct, self).write(vals)
         for p in self:
-            # Create service product automatically
             if vals.get("rental_of_interval", False):
                 if not p.product_rental_interval_id:
                     service_product = self._create_rental_service(
                         "interval", p, p.rental_price_interval
                     )
                     p.product_rental_interval_id = service_product
-            # update analytic account for service product
             if (
                 "income_analytic_account_id" in vals
                 or "expense_analytic_account_id" in vals

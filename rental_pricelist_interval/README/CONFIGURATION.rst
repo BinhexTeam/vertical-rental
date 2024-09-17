@@ -1,9 +1,4 @@
-
-Configuration
--------------
-
 To configure this module, you need to:
-
 #. Go to company settings and define the default interval ranges on 'Rental Interval Prices' tab.
    These ranges will be applied for computation of price intervals for rental service products when interval pricing is activated
    in stockable product.

@@ -1,7 +1,3 @@
-
-Usage
------
-
 To use this module, you need to:
 
 #. Create a new stockable product and define it as rental service or

@@ -12,19 +12,18 @@ from odoo.addons.rental_pricelist.tests.test_rental_pricelist import (
 
 
 class TestRentalPricelist(RentalStockCommon):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.uom_interval = self.env.ref(
-            "rental_pricelist_interval.product_uom_interval"
-        )
-        self.pricelist0 = self.env.ref("product.list0")
-        self.pricelist_interval = self.env.ref(
+        cls.uom_interval = cls.env.ref("rental_pricelist_interval.product_uom_interval")
+        cls.pricelist0 = cls.env.ref("product.list0")
+        cls.pricelist_interval = cls.env.ref(
             "rental_pricelist_interval.pricelist_interval"
         )
-        # Product Created A and B
-        ProductObj = self.env["product.product"]
-        self.productA = ProductObj.create(
+
+        ProductObj = cls.env["product.product"]
+        cls.productA = ProductObj.create(
             {
                 "name": "Product A",
                 "type": "product",
@@ -36,7 +35,7 @@ class TestRentalPricelist(RentalStockCommon):
                 "rental_interval_max": 21,
             }
         )
-        self.productB = ProductObj.create(
+        cls.productB = ProductObj.create(
             {
                 "name": "Product B",
                 "type": "product",
@@ -45,22 +44,22 @@ class TestRentalPricelist(RentalStockCommon):
                 "rental_price_day": 200,
             }
         )
-        self.today = fields.Date.from_string(fields.Date.today())
-        self.date_4_day_later = self.today + relativedelta(days=4)
-        self.date_12_day_later = self.today + relativedelta(days=12)
-        self.date_17_day_later = self.today + relativedelta(days=17)
-        self.date_24_day_later = self.today + relativedelta(days=24)
-        self.rental_order = (
-            self.env["sale.order"]
+        cls.today = fields.Date.from_string(fields.Date.today())
+        cls.date_4_day_later = cls.today + relativedelta(days=4)
+        cls.date_12_day_later = cls.today + relativedelta(days=12)
+        cls.date_17_day_later = cls.today + relativedelta(days=17)
+        cls.date_24_day_later = cls.today + relativedelta(days=24)
+        cls.rental_order = (
+            cls.env["sale.order"]
             .with_context(
-                {
-                    "default_type_id": self.rental_sale_type.id,
+                **{
+                    "default_type_id": cls.rental_sale_type.id,
                 }
             )
             .create(
                 {
-                    "partner_id": self.partnerA.id,
-                    "pricelist_id": self.pricelist_interval.id,
+                    "partner_id": cls.partnerA.id,
+                    "pricelist_id": cls.pricelist_interval.id,
                 }
             )
         )
@@ -73,7 +72,6 @@ class TestRentalPricelist(RentalStockCommon):
         Reset field rental_interval_price
         """
         self.assertEqual(self.productA.rental_price_interval, 1000)
-        # Create Interval Prices for productA
         self.env.user.company_id.write(
             {
                 "rental_price_interval_rule_ids": [
@@ -113,7 +111,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -126,8 +124,8 @@ class TestRentalPricelist(RentalStockCommon):
                 }
             )
         )
-        _run_sol_onchange_display_product_id(line)
         _run_sol_onchange_date(line)
+        _run_sol_onchange_display_product_id(line)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
         self.assertEqual(line.can_sell_rental, False)
@@ -136,10 +134,10 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.product_uom, self.uom_interval)
         self.assertEqual(line.product_uom_qty, 1)
         self.assertEqual(line.rental_qty, 1)
+        _run_sol_onchange_date(line)
         self.assertEqual(line.number_of_time_unit, 18)
         self.assertEqual(line.price_unit, 2250)
         self.assertEqual(line.price_subtotal, 2250)
-        # Change End Date and rental_qty
         line.rental_qty = 2
         _run_sol_onchange_date(line, end_date=self.date_12_day_later)
         self.assertEqual(line.rental_qty, 2)
