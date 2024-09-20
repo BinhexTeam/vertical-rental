@@ -31,7 +31,6 @@ class SaleOrderLine(models.Model):
         res["interval"] = uom_interval
         return res
 
-    # (override) _set_product_id from module rental_pricelist
     def _set_product_id(self):
         self.ensure_one()
         time_uoms = self._get_time_uom()
@@ -59,6 +58,47 @@ class SaleOrderLine(models.Model):
                         % {"rental_interval_max": product.rental_interval_max}
                     )
 
+    def _get_pricelist_price(self):
+        """Compute the price given by the pricelist for the given line information.
+
+        :return: the product sales price in the order currency (without taxes)
+        :rtype: float
+        """
+        self.ensure_one()
+        self.product_id.ensure_one()
+
+        pricelist_rule = self.pricelist_item_id
+        _logger.info("########## pricelist_rule %s" % pricelist_rule)
+        order_date = self.order_id.date_order or fields.Date.today()
+        product = self.product_id.with_context(**self._get_product_price_context())
+        qty = self.product_uom_qty or 1.0
+        uom = self.product_uom or self.product_id.uom_id
+        currency = self.currency_id or self.order_id.company_id.currency_id
+
+        price = pricelist_rule._compute_price(
+            product, qty, uom, order_date, currency=currency
+        )
+
+        return price
+
+    def _get_display_price(self):
+        """Compute the displayed unit price for a given line.
+        Overridden in custom flows:
+        * where the price is not specified by the pricelist
+        * where the discount is not specified by the pricelist
+        Note: self.ensure_one()
+        """
+        self.ensure_one()
+
+        pricelist_price = self._get_pricelist_price()
+        _logger.info("########## pricelist_price %s" % pricelist_price)
+        if self.order_id.pricelist_id.discount_policy == "with_discount":
+            return pricelist_price
+        if not self.pricelist_item_id:
+            return pricelist_price
+        base_price = self._get_pricelist_price_before_discount()
+        return max(base_price, pricelist_price)
+
     def _update_interval_price(self):
         self.ensure_one()
         if self.order_id.pricelist_id and self.order_id.partner_id:
@@ -68,7 +108,7 @@ class SaleOrderLine(models.Model):
             ):
                 self._check_interval_price()
                 self.product_uom_qty = self.rental_qty
-                product = self.product_id.with_context(
+                self.product_id = self.product_id.with_context(
                     lang=self.order_id.partner_id.lang,
                     partner=self.order_id.partner_id,
                     quantity=self.number_of_time_unit,
@@ -78,13 +118,11 @@ class SaleOrderLine(models.Model):
                     fiscal_position=self.env.context.get("fiscal_position"),
                 )
 
-                _logger.info(" %s" % self._get_display_price())
-
                 self.price_unit = self.env[
                     "account.tax"
                 ]._fix_tax_included_price_company(
                     self._get_display_price(),
-                    product.taxes_id,
+                    self.product_id.taxes_id,
                     self.tax_id,
                     self.company_id,
                 )

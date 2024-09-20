@@ -1,6 +1,9 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class ProductPricelistItem(models.Model):
@@ -14,11 +17,11 @@ class ProductPricelistItem(models.Model):
     @api.onchange("product_id")
     def _onchange_product_id(self):
         uom_interval = self.env.ref("rental_pricelist_interval.product_uom_interval")
-        super()._onchange_product_id()
+        res = super()._onchange_product_id()
         if self.product_id.rented_product_id:
             if self.product_id.uom_id.id == uom_interval.id:
                 self.interval_item_id = self.product_id.rented_product_id.id
-        return True
+        return res
 
 
 class ProductPricelist(models.Model):
@@ -84,11 +87,10 @@ class ProductProduct(models.Model):
                 "rental_pricelist_interval.product_uom_interval"
             )
             return uom_interval
-        else:
-            return super()._get_rental_service_uom(rental_type)
+        return super()._get_rental_service_uom(rental_type)
 
     def write(self, vals):
-        res = super(ProductProduct, self).write(vals)
+        res = super().write(vals)
         for p in self:
             if vals.get("rental_of_interval", False):
                 if not p.product_rental_interval_id:

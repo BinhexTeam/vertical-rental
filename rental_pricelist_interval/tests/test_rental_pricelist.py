@@ -135,6 +135,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.product_uom_qty, 1)
         self.assertEqual(line.rental_qty, 1)
         _run_sol_onchange_date(line)
+        _run_sol_onchange_display_product_id(line)
         self.assertEqual(line.number_of_time_unit, 18)
         self.assertEqual(line.price_unit, 2250)
         self.assertEqual(line.price_subtotal, 2250)
