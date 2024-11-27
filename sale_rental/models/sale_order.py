@@ -25,7 +25,8 @@ class SaleOrder(models.Model):
         res = super().action_cancel()
         for order in self:
             for line in order.order_line.filtered(
-                lambda l: l.rental_type == "rental_extension" and l.extension_rental_id
+                lambda lin: lin.rental_type == "rental_extension"
+                and lin.extension_rental_id
             ):
                 initial_end_date = line.extension_rental_id.end_date
                 line.extension_rental_id.in_move_id.write(
@@ -102,7 +103,8 @@ class SaleOrderLine(models.Model):
                             "On the sale order line with rental service %(name)s, "
                             "you are trying to extend a rental with a rental "
                             "quantity %(qty)s that is different from the quantity "
-                            "of the original rental %(rental_qty)s. This is not supported.",
+                            "of the original rental %(rental_qty)s. This is not "
+                            "supported.",
                             name=line.product_id.display_name,
                             qty=line.rental_qty,
                             rental_qty=line.extension_rental_id.rental_qty,
@@ -278,11 +280,12 @@ class SaleOrderLine(models.Model):
                         res["warning"] = {
                             "title": _("Not enough stock !"),
                             "message": _(
-                                "You want to rent %(rental_qty).2f  %(uom_name)s but you only "
-                                "have %(available_qty).2f %(uom_name)s currently "
-                                "available on the  stock location '%(rental_name)s' ! "
-                                "Make sure that you get some units back in the mean time or "
-                                "re-supply the stock location '%(rental_name)s'.",
+                                "You want to rent %(rental_qty).2f  %(uom_name)s but "
+                                "you only have %(available_qty).2f %(uom_name)s "
+                                "currently available on the  stock location "
+                                "'%(rental_name)s' ! Make sure that you get some "
+                                "units back in the mean time or re-supply the stock "
+                                "location '%(rental_name)s'.",
                                 rental_qty=self.rental_qty,
                                 uom_name=product_uom.name,
                                 available_qty=in_location_available_qty,
