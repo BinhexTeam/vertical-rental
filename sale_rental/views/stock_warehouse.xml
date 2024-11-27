@@ -16,15 +16,15 @@
         <field name="wh_output_stock_loc_id" position="after">
             <field
                     name="rental_view_location_id"
-                    attrs="{'invisible': [('rental_allowed', '=', False)]}"
+                    invisible="not rental_allowed"
                 />
             <field
                     name="rental_in_location_id"
-                    attrs="{'invisible': [('rental_allowed', '=', False)]}"
+                    invisible="not rental_allowed"
                 />
             <field
                     name="rental_out_location_id"
-                    attrs="{'invisible': [('rental_allowed', '=', False)]}"
+                    invisible="not rental_allowed"
                 />
         </field>
         <group name="group_resupply" position="after">
@@ -32,11 +32,11 @@
                 <field name="rental_allowed" />
                 <field
                         name="rental_route_id"
-                        attrs="{'invisible': [('rental_allowed', '=', False)]}"
+                    invisible="not rental_allowed"
                     />
                 <field
                         name="sell_rented_product_route_id"
-                        attrs="{'invisible': [('rental_allowed', '=', False)]}"
+                    invisible="not rental_allowed"
                     />
             </group>
         </group>

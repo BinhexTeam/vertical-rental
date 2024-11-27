@@ -44,29 +44,21 @@ class SaleOrderLine(models.Model):
     can_sell_rental = fields.Boolean(string="Can Sell from Rental")
     rental_type = fields.Selection(
         [("new_rental", "New Rental"), ("rental_extension", "Rental Extension")],
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
     extension_rental_id = fields.Many2one(
         "sale.rental",
         string="Rental to Extend",
         check_company=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
     rental_qty = fields.Float(
         string="Rental Quantity",
         digits="Product Unit of Measure",
-        readonly=True,
-        states={"draft": [("readonly", False)]},
         help="Indicate the number of items that will be rented.",
     )
     sell_rental_id = fields.Many2one(
         "sale.rental",
         string="Rental to Sell",
         check_company=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
 
     _sql_constraints = [
