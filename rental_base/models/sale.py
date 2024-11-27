@@ -72,22 +72,6 @@ class SaleOrderLine(models.Model):
         related="product_id.rented_product_id.uom_id",
     )
 
-    start_date = fields.Date(
-        states={
-            "draft": [("readonly", False)],
-            "sent": [("readonly", False)],
-            "sale": [("readonly", False)],
-        }
-    )
-
-    end_date = fields.Date(
-        states={
-            "draft": [("readonly", False)],
-            "sent": [("readonly", False)],
-            "sale": [("readonly", False)],
-        }
-    )
-
     @api.constrains(
         "rental_type",
         "extension_rental_id",
