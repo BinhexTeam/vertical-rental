@@ -13,14 +13,14 @@
                 <label
                     for="offday_number"
                     string="Off-Time"
-                    attrs="{'invisible': [('show_offday', '=', False)]}"
+                    invisible="not show_offday"
                 />
-                <div attrs="{'invisible': [('show_offday', '=', False)]}">
+                <div invisible="not show_offday">
                     <field name="offday_number" class="oe_inline" /> Day(s)
                 </div>
             </xpath>
             <xpath expr="//field[@name='order_line']//form" position="inside">
-                <notebook attrs="{'invisible': [('show_offday', '=', False)]}">
+                <notebook invisible="not show_offday">
                     <page name="offdays" string="Off-Days">
                         <field name="show_offday" invisible="1" />
                         <group>
