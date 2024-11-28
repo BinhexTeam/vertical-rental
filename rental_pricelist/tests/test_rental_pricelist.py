@@ -152,7 +152,6 @@ class TestRentalPricelist(RentalStockCommon):
             .create(
                 {
                     "partner_id": self.partnerA.id,
-                    "pricelist_id": self.env.ref("product.list0").id,
                 }
             )
         )
@@ -484,7 +483,8 @@ class TestRentalPricelist(RentalStockCommon):
         with self.assertRaises(ValidationError) as e:
             rental_serviceE.type = "consu"
         self.assertEqual(
-            "The rental product 'Rental of Product E (Day(s))' must be of type 'Service'.",
+            "The rental product 'Rental of Product E (Day(s))' must be "
+            "of type 'Service'.",
             str(e.exception),
         )
         with self.assertRaises(ValidationError) as e:
@@ -547,7 +547,6 @@ class TestRentalPricelist(RentalStockCommon):
             .create(
                 {
                     "partner_id": self.partnerA.id,
-                    "pricelist_id": self.env.ref("product.list0").id,
                 }
             )
         )

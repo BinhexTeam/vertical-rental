@@ -7,10 +7,6 @@ from odoo.exceptions import ValidationError
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    def _default_pricelist(self):
-        # TODO change default pricelist if country group exist
-        return self.env.ref("product.list0").id
-
     rental_of_month = fields.Boolean(
         string="Rented in months",
         copy=False,
@@ -95,7 +91,6 @@ class ProductProduct(models.Model):
     def_pricelist_id = fields.Many2one(
         comodel_name="product.pricelist",
         string="Default Pricelist",
-        default=lambda self: self._default_pricelist(),
     )
 
     # override from sale_rental, to remove Uom constrain
@@ -120,11 +115,7 @@ class ProductProduct(models.Model):
 
     @api.model
     def _get_rental_service_prefix_suffix(self, field, str_type, rental_type):
-        field_name = "rental_service_%(field)s_%(str_type)s_%(rental_type)s" % {
-            "field": field,
-            "str_type": str_type,
-            "rental_type": rental_type,
-        }
+        field_name = f"rental_service_{field}_{str_type}_{rental_type}"
         res = getattr(self.env.user.company_id, field_name)
         return res
 
@@ -186,9 +177,9 @@ class ProductProduct(models.Model):
         suffix = self._get_rental_service_prefix_suffix("name", "suffix", rental_type)
         name = sp_name
         if prefix:
-            name = "%(prefix)s %(name)s" % {"prefix": prefix, "name": name}
+            name = f"{prefix} {name}"
         if suffix:
-            name = "%(name)s %(suffix)s" % {"name": name, "suffix": suffix}
+            name = f"{name} {suffix}"
         return name
 
     def _get_rental_service_default_code(self, rental_type, sp_code):
@@ -202,15 +193,9 @@ class ProductProduct(models.Model):
         default_code = sp_code
         if default_code:
             if prefix:
-                default_code = "%(prefix)s-%(default_code)s" % {
-                    "prefix": prefix,
-                    "default_code": default_code,
-                }
+                default_code = f"{prefix}-{default_code}"
             if suffix:
-                default_code = "%(default_code)s-%(suffix)s" % {
-                    "default_code": default_code,
-                    "suffix": suffix,
-                }
+                default_code = f"{default_code}-{suffix}"
         else:
             default_code = ""
         return default_code
@@ -220,12 +205,10 @@ class ProductProduct(models.Model):
         uom = self._get_rental_service_uom(rental_type)
         values = {
             "hw_product_id": product.id,
-            "name": _("Rental of %(product_name)s (%(uom_name)s)")
-            % {"product_name": product.name, "uom_name": uom.name},
+            "name": _(f"Rental of {product.name} ({uom.name})"),
             "categ_id": product.categ_id.id,
             "copy_image": True,
-            "default_code": "RENT-%(rental)s-%(code)s"
-            % {"rental": rental_type.upper(), "code": product.default_code},
+            "default_code": f"RENT-{rental_type.upper()}-{product.default_code}",
         }
         res = (
             self.env["create.rental.product"]
@@ -312,7 +295,7 @@ class ProductProduct(models.Model):
         self.rental_service_ids.write(service_vals)
 
     def write(self, vals):
-        res = super(ProductProduct, self).write(vals)
+        res = super().write(vals)
         for p in self:
             # Create service product automatically
             if vals.get("rental_of_month", False):

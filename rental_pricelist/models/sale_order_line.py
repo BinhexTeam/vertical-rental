@@ -56,7 +56,6 @@ class SaleOrderLine(models.Model):
             else:
                 self.rental = False
                 self.product_id = self.display_product_id
-                # raise exceptions.UserError(_('The product has no related rental services.'))
         elif not self.rental and self.display_product_id:
             self.product_id = self.display_product_id
 
@@ -121,7 +120,8 @@ class SaleOrderLine(models.Model):
                 "title": _("Not enough stock!"),
                 "message": _(
                     "You want to rent %(rental_qty).2f %(rental_uom)s but you only "
-                    "have %(available_qty).2f %(rental_uom)s currently available on the "
+                    "have %(available_qty).2f %(rental_uom)s currently available "
+                    "on the "
                     'stock location "%(rental_name)s"! Make sure that you '
                     "get some units back in the meantime or "
                     're-supply the stock location "%(rental_name)s".'
@@ -194,9 +194,9 @@ class SaleOrderLine(models.Model):
                         _(
                             "On the sale order line with rental service %(name)s, "
                             "you are trying to extend a rental with a rental "
-                            "quantity (%(rental_qty)s) that is different from the quantity "
-                            "of the original rental (%(ext_rental_qty)s). "
-                            "This is not supported."
+                            "quantity (%(rental_qty)s) that is different from "
+                            "the quantity of the original rental "
+                            "(%(ext_rental_qty)s). This is not supported."
                         )
                         % {
                             "name": line.product_id.name,
