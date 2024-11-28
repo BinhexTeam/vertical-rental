@@ -9,7 +9,7 @@ class SaleOrderLine(models.Model):
     number_of_time_unit = fields.Float(
         string="Number of TU",
         help="This is the time difference given by "
-        "start and end date for this order line.",
+             "start and end date for this order line.",
     )
 
     display_product_id = fields.Many2one(
@@ -126,12 +126,12 @@ class SaleOrderLine(models.Model):
                     "get some units back in the meantime or "
                     're-supply the stock location "%(rental_name)s".'
                 )
-                % {
-                    "rental_qty": self.rental_qty,
-                    "rental_uom": self.product_id.rented_product_id.uom_id.name,
-                    "available_qty": in_location_available_qty,
-                    "rental_name": rental_in_location.name,
-                },
+                           % {
+                               "rental_qty": self.rental_qty,
+                               "rental_uom": self.product_id.rented_product_id.uom_id.name,
+                               "available_qty": in_location_available_qty,
+                               "rental_name": rental_in_location.name,
+                           },
             }
         return res
 
