@@ -1,1 +1,2 @@
+https://github.com/OCA/product-pack/tree/17.0
 odoo-addon-rental_base @ git+https://github.com/OCA/vertical-rental.git@refs/pull/53/head#subdirectory=rental_base
