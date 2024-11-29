@@ -55,7 +55,7 @@ class TestRentalOffDay(TransactionCase):
         )
 
         self.sale_order_line = self.sale_order.order_line[0]
-        self.sale_order_line.onchange_start_end_date()
+        self.sale_order_line._onchange_start_end_date()
         self.sale_order_line.rental_qty_number_of_days_change()
 
     def test_01_daily_rental_no_offdays(self):
@@ -187,7 +187,7 @@ class TestRentalOffDay(TransactionCase):
                 "end_date": date_end,
             }
         )
-        self.sale_order_line.onchange_start_end_date()
+        self.sale_order_line._onchange_start_end_date()
         self.sale_order_line.write(
             {
                 "fixed_offday_type": "weekend",
