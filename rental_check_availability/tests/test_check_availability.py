@@ -44,7 +44,6 @@ class TestRentalCheckAvailability(RentalStockCommon):
                 {
                     "warehouse_id": self.warehouse0.id,
                     "partner_id": self.partnerA.id,
-                    "pricelist_id": self.env.ref("product.list0").id,
                 }
             )
         )
