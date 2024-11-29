@@ -98,7 +98,7 @@ class TestRentalPricelist(RentalStockCommon):
                 "rental_price_hour": 10,
                 "income_analytic_account_id": self.analytic_account_A.id,
                 "expense_analytic_account_id": self.analytic_account_A.id,
-                "def_pricelist_id": public_pricelist.id
+                "def_pricelist_id": public_pricelist.id,
             }
         )
         self.productB = ProductObj.create(
@@ -130,7 +130,7 @@ class TestRentalPricelist(RentalStockCommon):
                 "rental_of_day": True,
                 "rental_price_day": 500,
                 "default_code": "PRD-E123",
-                "def_pricelist_id": public_pricelist.id
+                "def_pricelist_id": public_pricelist.id,
             }
         )
         self.productF = ProductObj.create(
