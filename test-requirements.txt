@@ -1,1 +1,2 @@
 odoo-addon-rental_base @ git+https://github.com/OCA/vertical-rental.git@refs/pull/53/head#subdirectory=rental_base
+odoo-addon-product_analytic @ git+https://github.com/OCA/account-analytic.git@refs/pull/670/head#subdirectory=product_analytic
