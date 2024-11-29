@@ -18,7 +18,6 @@ class TestRentalPricelist(RentalStockCommon):
         self.uom_interval = self.env.ref(
             "rental_pricelist_interval.product_uom_interval"
         )
-        self.pricelist0 = self.env.ref("product.list0")
         self.pricelist_interval = self.env.ref(
             "rental_pricelist_interval.pricelist_interval"
         )
@@ -151,7 +150,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.price_unit, 1000)
         self.assertEqual(line.price_subtotal, 2000)  # 2 * 1000
         # Change Pricelist
-        self.rental_order.pricelist_id = self.pricelist0
+        self.rental_order.pricelist_id = self.pricelist_interval
         _run_sol_onchange_display_product_id(line)
         _run_sol_onchange_date(line, end_date=self.date_12_day_later)
         self.assertEqual(line.price_unit, 200)
