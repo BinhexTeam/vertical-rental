@@ -9,7 +9,7 @@ class SaleOrderLine(models.Model):
     number_of_time_unit = fields.Float(
         string="Number of TU",
         help="This is the time difference given by "
-             "start and end date for this order line.",
+        "start and end date for this order line.",
     )
 
     display_product_id = fields.Many2one(
@@ -116,22 +116,19 @@ class SaleOrderLine(models.Model):
             precision_rounding=product_uom.rounding,
         )
         if compare_qty == -1:
+            rental_uom_name = self.product_id.rented_product_id.uom_id.name
             res["warning"] = {
                 "title": _("Not enough stock!"),
                 "message": _(
-                    "You want to rent %(rental_qty).2f %(rental_uom)s but you only "
-                    "have %(available_qty).2f %(rental_uom)s currently available "
+                    f"You want to rent {self.rental_qty}.2f {rental_uom_name} "
+                    f"but you only "
+                    f"have {in_location_available_qty}.2f "
+                    f"{rental_uom_name} currently available "
                     "on the "
-                    'stock location "%(rental_name)s"! Make sure that you '
+                    f'stock location "{rental_in_location.name}"! Make sure that you '
                     "get some units back in the meantime or "
-                    're-supply the stock location "%(rental_name)s".'
-                )
-                           % {
-                               "rental_qty": self.rental_qty,
-                               "rental_uom": self.product_id.rented_product_id.uom_id.name,
-                               "available_qty": in_location_available_qty,
-                               "rental_name": rental_in_location.name,
-                           },
+                    f're-supply the stock location "{rental_in_location.name}".'
+                ),
             }
         return res
 
