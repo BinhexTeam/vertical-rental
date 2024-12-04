@@ -43,7 +43,6 @@ class ProductTimeline(models.Model):
     )
 
     date_start = fields.Datetime(
-        string="Date Start",
         require=True,
     )
 
@@ -57,7 +56,6 @@ class ProductTimeline(models.Model):
     )
 
     date_end = fields.Datetime(
-        string="Date End",
         require=True,
     )
 
@@ -83,7 +81,6 @@ class ProductTimeline(models.Model):
     )
 
     product_name = fields.Char(
-        string="Product Name",
         help="This field contains the product name as string "
         "to show it in rental timeline mouseover view.",
         compute="_compute_required_fields",
@@ -91,7 +88,6 @@ class ProductTimeline(models.Model):
     )
 
     time_uom = fields.Many2one(
-        string="Time UOM",
         comodel_name="uom.uom",
         compute="_compute_fields",
         store=True,
@@ -105,11 +101,11 @@ class ProductTimeline(models.Model):
     )
 
     type = fields.Selection(
-        string="Type",
         selection=[
             ("rental", "Confirmed Order"),
             ("reserved", "Quotation"),
         ],
+        ondelete={"rental": "cascade", "reserved": "cascade"},
     )
 
     type_formated = fields.Char(
@@ -121,7 +117,6 @@ class ProductTimeline(models.Model):
     )
 
     has_clues = fields.Char(
-        "Has Clues",
         compute="_compute_fields",
         store=True,
     )
@@ -144,7 +139,6 @@ class ProductTimeline(models.Model):
     )
 
     name = fields.Char(
-        string="Name",
         compute="_compute_fields",
         store=True,
     )
@@ -202,7 +196,6 @@ class ProductTimeline(models.Model):
     )
 
     amount = fields.Char(
-        string="Amount",
         compute="_compute_fields",
         store=True,
     )
@@ -215,7 +208,6 @@ class ProductTimeline(models.Model):
     )
 
     warehouse_name = fields.Char(
-        string="Warehouse Name",
         help="This field contains the warehouse name as string "
         "to show it in rental timeline mouseover view.",
         compute="_compute_warehouse_name",

@@ -2,7 +2,7 @@
 
 {
     "name": "Rental Timeline",
-    "version": "12.0.1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Rental",
     "summary": "Timeline view for rental orders and rental products",
     "usage": """
@@ -16,7 +16,6 @@ Just install this module. No further configuration is necessary.
     ],
     "data": [
         "security/ir.model.access.csv",
-        "views/assets.xml",
         "views/product_timeline_view.xml",
         "views/product_view.xml",
     ],

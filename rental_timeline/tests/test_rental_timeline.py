@@ -108,12 +108,7 @@ class TestRentalTimeline(RentalStockCommon):
         )
         wizard_1 = (
             self.env["update.sale.line.date"]
-            .with_context(
-                {
-                    "active_model": "sale.order",
-                    "active_ids": rental_order_2.ids,
-                }
-            )
+            .with_context(active_model="sale.order", active_ids=rental_order_2.ids)
             .create(
                 {
                     "order_id": rental_order_2.id,
