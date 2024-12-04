@@ -18,6 +18,7 @@ Just install this module. No further configuration is necessary.
         "security/ir.model.access.csv",
         "views/product_timeline_view.xml",
         "views/product_view.xml",
+        "views/sale_order_views.xml",
     ],
     "demo": [],
     "qweb": [],

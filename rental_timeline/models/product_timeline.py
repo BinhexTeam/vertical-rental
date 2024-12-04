@@ -16,14 +16,14 @@ class ProductTimeline(models.Model):
         string="Origin Data Model",
         help="This is a technical field to know which kind "
         "of Odoo object this timeline item is about.",
-        require=True,
+        required=True,
     )
 
     res_id = fields.Integer(
         string="Origin Object ID",
         help="This is a technical field to know which exact "
         "Odoo object this timeline item is about.",
-        require=True,
+        required=True,
     )
 
     click_res_model = fields.Char(
@@ -31,7 +31,7 @@ class ProductTimeline(models.Model):
         help="This is a technical field to define which kind "
         "of Odoo object this timeline item opens, when "
         "double clicked.",
-        require=True,
+        required=True,
     )
 
     click_res_id = fields.Integer(
@@ -39,11 +39,11 @@ class ProductTimeline(models.Model):
         help="This is a technical field to define which exact "
         "Odoo object this timeline item opens, when double "
         "clicked.",
-        require=True,
+        required=True,
     )
 
     date_start = fields.Datetime(
-        require=True,
+        required=True,
     )
 
     date_start_formated = fields.Char(
@@ -56,7 +56,7 @@ class ProductTimeline(models.Model):
     )
 
     date_end = fields.Datetime(
-        require=True,
+        required=True,
     )
 
     date_end_formated = fields.Char(
@@ -97,7 +97,7 @@ class ProductTimeline(models.Model):
         string="Order",
         help="This field contains the order name as string "
         "to show it in rental timeline mouseover view.",
-        require=True,
+        required=True,
     )
 
     type = fields.Selection(
@@ -176,7 +176,6 @@ class ProductTimeline(models.Model):
 
     price_subtotal = fields.Monetary(
         currency_field="currency_id",
-        field_digits=True,
         compute="_compute_fields",
         store=True,
     )

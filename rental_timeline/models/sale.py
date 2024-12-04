@@ -16,14 +16,6 @@ class SaleOrderLine(models.Model):
         compute="_compute_timeline_ids",
     )
 
-    rental_type = fields.Selection(
-        states={
-            "draft": [("readonly", False)],
-            "sent": [("readonly", False)],
-            "sale": [("readonly", False)],
-        }
-    )
-
     def _compute_timeline_ids(self):
         for line in self:
             domain = [
@@ -106,11 +98,12 @@ class SaleOrderLine(models.Model):
         for line in self:
             line.timeline_ids._compute_fields()
 
-    @api.model
-    def create(self, vals):
-        res = super().create(vals)
-        res._create_product_timeline()
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        sales = super().create(vals_list)
+        for sale in sales:
+            sale._create_product_timeline()
+        return sales
 
     def write(self, vals):
         res = super().write(vals)
