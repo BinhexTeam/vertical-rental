@@ -12,8 +12,6 @@ class TestRentalTimeline(RentalStockCommon):
         self.partnerA = self.PartnerObj.create(
             {
                 "name": "Timeline Partner A",
-                "customer": True,
-                "supplier": True,
                 "country_id": self.env.ref("base.de").id,
             }
         )
@@ -43,6 +41,7 @@ class TestRentalTimeline(RentalStockCommon):
         self.date_0110 = fields.Date.from_string("2022-01-10")
         self.date_0102 = fields.Date.from_string("2022-01-02")
         self.date_0111 = fields.Date.from_string("2022-01-11")
+        self.service_rental = self.env["sale.order"]
 
     def get_related_timeline_from_rental_order(self, line):
         domain = [
