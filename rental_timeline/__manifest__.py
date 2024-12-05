@@ -11,6 +11,7 @@ Just install this module. No further configuration is necessary.
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
+        "base",
         "web_timeline",
         "rental_base",
     ],
@@ -20,6 +21,13 @@ Just install this module. No further configuration is necessary.
         "views/product_view.xml",
         "views/sale_order_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "rental_timeline/static/src/views/rental_timeline/rental_timeline_view.esm.js",
+            "rental_timeline/static/src/views/rental_timeline/rental_timeline_model.esm.js",
+            "rental_timeline/static/src/views/rental_timeline/rental_timeline_renderer.esm.js",
+        ],
+    },
     "demo": [],
     "qweb": [],
     "application": False,
