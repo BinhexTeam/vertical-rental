@@ -8,17 +8,30 @@
     <record id="product_normal_form_view" model="ir.ui.view">
         <field name="name">rental.product.product.form</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
             <group name="sale" position="after">
                 <group name="rental" string="Rental" invisible="type != 'service'">
-                    <field name="rented_product_id"/>
+                    <field name="rented_product_id" />
                 </group>
-                <group string="Rental Services" name="rental_services" invisible="type == 'service'">
-                    <button colspan="2" type="action" name="%(sale_rental.create_rental_product_action)d"
-                            string="Create Rental Service"/>
-                    <field colspan="2" name="rental_service_ids" nolabel="1" readonly="1"
-                           invisible="rental_service_ids == []"/>
+                <group
+                    string="Rental Services"
+                    name="rental_services"
+                    invisible="type == 'service'"
+                >
+                    <button
+                        colspan="2"
+                        type="action"
+                        name="%(sale_rental.create_rental_product_action)d"
+                        string="Create Rental Service"
+                    />
+                    <field
+                        colspan="2"
+                        name="rental_service_ids"
+                        nolabel="1"
+                        readonly="1"
+                        invisible="rental_service_ids == []"
+                    />
                 </group>
             </group>
         </field>
@@ -27,7 +40,7 @@
     <record id="product_template_only_form_view" model="ir.ui.view">
         <field name="name">rental.product.template.only.form</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
             <group name="sale" position="inside">
                 <label
