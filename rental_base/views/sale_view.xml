@@ -35,12 +35,13 @@
             <field name="default_start_date" position="replace" />
             <field name="default_end_date" position="replace" />
             <field name="validity_date" position="after">
-                <span class="o_form_label font-weight-bold">Service Period</span>
-                <div name="service_period" string="Service Period">
-                    <field name="default_start_date" class="oe_inline" nolabel="1" />
-                    to
-                    <field name="default_end_date" class="oe_inline" nolabel="1" />
-                </div>
+                <field
+                    name="default_start_date"
+                    widget="daterange"
+                    options="{'end_date_field': 'default_end_date'}"
+                    string="Service Period"
+                />
+                <field name="default_end_date" invisible="1" />
             </field>
             <field name="number_of_days" position="attributes">
                 <attribute name="invisible">1</attribute>
