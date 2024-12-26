@@ -141,22 +141,26 @@
             <xpath expr="//label[@for='qty_delivered']" position="attributes">
                 <attribute
                     name="invisible"
-                >rental or parent.state not in ('sale','done')</attribute>
+                >rental or parent.state not in ('sale','done')
+                </attribute>
             </xpath>
             <xpath expr="//div[field[@name='qty_delivered']]" position="attributes">
                 <attribute
                     name="invisible"
-                >rental or parent.state not in ('sale','done')</attribute>
+                >rental or parent.state not in ('sale','done')
+                </attribute>
             </xpath>
             <xpath expr="//label[@for='qty_invoiced']" position="attributes">
                 <attribute
                     name="invisible"
-                >rental or parent.state not in ('sale','done')</attribute>
+                >rental or parent.state not in ('sale','done')
+                </attribute>
             </xpath>
             <xpath expr="//div[field[@name='qty_invoiced']]" position="attributes">
                 <attribute
                     name="invisible"
-                >rental or parent.state not in ('sale','done')</attribute>
+                >rental or parent.state not in ('sale','done')
+                </attribute>
             </xpath>
             <xpath expr="//label[@for='name']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -182,17 +186,19 @@
                 <attribute name="options">{'no_create': True}</attribute>
             </xpath>
             <xpath expr="//field[@name='product_id']" position="after">
-                <label for="rental_qty" string="Rental Quantity" invisible="rental" />
-                <div invisible="rental==False">
-                    <field name="rental_qty" required="rental" class="oe_inline" />
-                    <span>&amp;nbsp;</span>
-                    <field
-                        name="rental_qty_uom"
-                        groups="uom.group_uom"
-                        readonly="1"
-                        class="oe_inline oe_no_button"
-                    />
-                </div>
+                <field
+                    name="rental_qty"
+                    required="rental"
+                    class="oe_inline"
+                    invisible="rental==False"
+                />
+                <field
+                    name="rental_qty_uom"
+                    groups="uom.group_uom"
+                    readonly="1"
+                    class="oe_inline oe_no_button"
+                    invisible="rental==False"
+                />
                 <field
                     name="product_uom"
                     string="Rental Time Unit"
@@ -249,66 +255,51 @@
                     invisible="rental == False"
                 >
                     <field name="number_of_days" />
-                    <label for="product_uom_qty" string="Ordered Rental Time" />
-                    <div>
-                        <field
-                            name="product_uom_qty"
-                            context="{'partner_id':parent.partner_id,
+                    <field
+                        name="product_uom_qty"
+                        context="{'partner_id':parent.partner_id,
                                          'quantity':product_uom_qty,
                                          'pricelist':parent.pricelist_id,
                                          'uom':product_uom,
                                          'uom_qty_change':True,
                                          'company_id': parent.company_id}"
-                            class="oe_inline"
-                        />
-                        <span>&amp;nbsp;</span>
-                        <field
-                            name="product_uom"
-                            force_save="1"
-                            groups="uom.group_uom"
-                            class="oe_inline oe_no_button"
-                            readonly="1"
-                        />
-                    </div>
-                    <label
-                        for="qty_delivered"
-                        string="Delivered Rental Quantity"
+                        class="oe_inline"
+                        string="Ordered Rental Time"
+                    />
+                    <field
+                        name="product_uom"
+                        force_save="1"
+                        groups="uom.group_uom"
+                        class="oe_inline oe_no_button"
+                        readonly="1"
+                    />
+                    <field
+                        name="qty_delivered"
+                        readonly="qty_delivered_method != 'manual'"
+                        class="oe_inline"
                         invisible="parent.state not in ('sale', 'done')"
                     />
-                    <div invisible="parent.state not in ('sale', 'done')">
-                        <field
-                            name="qty_delivered"
-                            readonly="qty_delivered_method != 'manual'"
-                            class="oe_inline"
-                        />
-                        <span>&amp;nbsp;</span>
-                        <field
-                            name="rental_qty_uom"
-                            groups="uom.group_uom"
-                            readonly="1"
-                            class="oe_inline oe_no_button"
-                        />
-                    </div>
-                    <label
-                        for="qty_invoiced"
+                    <field
+                        name="rental_qty_uom"
+                        groups="uom.group_uom"
+                        readonly="1"
+                        class="oe_inline oe_no_button"
+                        invisible="parent.state not in ('sale', 'done')"
+                    />
+                    <field
+                        name="qty_invoiced"
+                        invisible="parent.state not in ('sale', 'done')"
+                        class="oe_inline"
                         string="Invoiced Rental Time"
+                    />
+                    <field
+                        name="product_uom"
+                        force_save="1"
+                        groups="uom.group_uom"
+                        class="oe_inline oe_no_button"
+                        readonly="1"
                         invisible="parent.state not in ('sale', 'done')"
                     />
-                    <div invisible="parent.state not in ('sale', 'done')">
-                        <field
-                            name="qty_invoiced"
-                            invisible="parent.state not in ('sale', 'done')"
-                            class="oe_inline"
-                        />
-                        <span>&amp;nbsp;</span>
-                        <field
-                            name="product_uom"
-                            force_save="1"
-                            groups="uom.group_uom"
-                            class="oe_inline oe_no_button"
-                            readonly="1"
-                        />
-                    </div>
                 </group>
                 <!-- Group: Transport -->
                 <group id="rental_transport" string="Transport" colspan="4">
@@ -355,17 +346,15 @@
                 expr="//field[@name='order_line']/form//field[@name='start_date']"
                 position="attributes"
             >
-                <attribute
-                    name="readonly"
-                >state not in ('draft','sent','sale')</attribute>
+                <attribute name="readonly">state not in ('draft','sent','sale')
+                </attribute>
             </xpath>
             <xpath
                 expr="//field[@name='order_line']/form//field[@name='end_date']"
                 position="attributes"
             >
-                <attribute
-                    name="readonly"
-                >state not in ('draft','sent','sale')</attribute>
+                <attribute name="readonly">state not in ('draft','sent','sale')
+                </attribute>
             </xpath>
 
         </field>
