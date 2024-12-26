@@ -12,4 +12,4 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    rental = fields.Boolean("Can be Rent")
+    rental = fields.Boolean("Can be Rent", related="product_tmpl_id.rental")
