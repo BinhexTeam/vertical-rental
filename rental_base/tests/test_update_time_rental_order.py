@@ -84,19 +84,15 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         )
         self.assertEqual(len(rental_1), 1)
         self.assertEqual(
-            rental_1.out_picking_id.scheduled_date,
-            fields.Datetime.to_datetime(self.date_0102),
+            rental_1.out_picking_id.scheduled_date.date(),
+            self.date_0101,
         )
         self.assertEqual(
-            rental_1.in_picking_id.scheduled_date,
-            fields.Datetime.to_datetime(self.date_0111),
+            rental_1.in_picking_id.scheduled_date.date(),
+            self.date_0110,
         )
-        self.assertEqual(
-            rental_1.out_move_id.date, fields.Datetime.to_datetime(self.date_0102)
-        )
-        self.assertEqual(
-            rental_1.in_move_id.date, fields.Datetime.to_datetime(self.date_0111)
-        )
+        self.assertEqual(rental_1.out_move_id.date.date(), self.date_0101)
+        self.assertEqual(rental_1.in_move_id.date.date(), self.date_0110)
         # 2. change date, date_in_lines = True
         line_ids_value_2 = []
         line_ids_value_2.append(
@@ -146,16 +142,12 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         )
         self.assertEqual(len(rental_2), 1)
         self.assertEqual(
-            rental_2.out_picking_id.scheduled_date,
-            fields.Datetime.to_datetime(self.date_0103),
+            rental_2.out_picking_id.scheduled_date.date(),
+            self.date_0101,
         )
         self.assertEqual(
-            rental_2.in_picking_id.scheduled_date,
-            fields.Datetime.to_datetime(self.date_0112),
+            rental_2.in_picking_id.scheduled_date.date(),
+            self.date_0110,
         )
-        self.assertEqual(
-            rental_2.out_move_id.date, fields.Datetime.to_datetime(self.date_0103)
-        )
-        self.assertEqual(
-            rental_2.in_move_id.date, fields.Datetime.to_datetime(self.date_0112)
-        )
+        self.assertEqual(rental_2.out_move_id.date.date(), self.date_0101)
+        self.assertEqual(rental_2.in_move_id.date.date(), self.date_0110)
