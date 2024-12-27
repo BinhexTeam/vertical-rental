@@ -35,10 +35,25 @@
             <field name="default_start_date" position="replace" />
             <field name="default_end_date" position="replace" />
             <field name="validity_date" position="after">
-                <span class="o_form_label font-weight-bold">Service Period</span>
-                <div name="service_period" string="Service Period">
-                    <field name="default_start_date" class="oe_inline" nolabel="1" /> to
-                    <field name="default_end_date" class="oe_inline" nolabel="1" />
+                <label for="default_start_date" string="Service Period" />
+                <div class="o_row">
+                    <field
+                        name="default_start_date"
+                        widget="daterange"
+                        nolabel="1"
+                        options="{'related_end_date': 'default_end_date'}"
+                    />
+                    <i
+                        class="fa fa-long-arrow-right"
+                        aria-label="Arrow icon"
+                        title="Arrow"
+                    />
+                    <field
+                        name="default_end_date"
+                        widget="daterange"
+                        nolabel="1"
+                        options="{'related_start_date': 'default_start_date'}"
+                    />
                 </div>
             </field>
             <field name="number_of_days" position="attributes">
@@ -163,9 +178,8 @@
                 expr="//page[@name='order_lines']//form//field[@name='name']"
                 position="attributes"
             >
-                <attribute
-                    name="attrs"
-                >{'invisible': [('display_type', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': [('display_type', '=', False)]}
+                </attribute>
             </xpath>
             <!-- Group: Order Information -->
             <xpath expr="//group[field[@name='product_id']]" position="attributes">
@@ -173,14 +187,12 @@
                 <attribute name="string">Order Information</attribute>
             </xpath>
             <xpath expr="//label[@for='product_uom_qty']" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'invisible': [('rental', '=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': [('rental', '=', True)]}
+                </attribute>
             </xpath>
             <xpath expr="//div[field[@name='product_uom_qty']]" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'invisible': [('rental', '=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': [('rental', '=', True)]}
+                </attribute>
             </xpath>
             <xpath expr="//field[@name='product_uom']" position="attributes">
                 <attribute name="options">{'no_create': True}</attribute>
@@ -340,7 +352,8 @@
                     />
                     <label for="customer_lead" />
                     <div>
-                        <field name="customer_lead" class="oe_inline" /> Day(s)
+                        <field name="customer_lead" class="oe_inline" />
+                        Day(s)
                     </div>
                 </group>
                 <!-- Group: Invoicing -->
