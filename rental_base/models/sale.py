@@ -88,6 +88,13 @@ class SaleOrderLine(models.Model):
         }
     )
 
+    rental = fields.Boolean(compute="_compute_rental", store=True)
+
+    @api.depends("product_id")
+    def _compute_rental(self):
+        for line in self:
+            line.rental = line.product_id.rental
+
     @api.constrains(
         "rental_type",
         "extension_rental_id",
