@@ -2,5 +2,6 @@
 from . import sale_order_line
 from . import sale_order
 from . import product
+from . import product_template
 from . import product_pricelist_item
 from . import res_company

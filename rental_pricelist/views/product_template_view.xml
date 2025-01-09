@@ -1,11 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <!-- ProductProduct -->
-    <record id="product_normal_form_view" model="ir.ui.view">
-        <field name="name">view.product.product.form</field>
-        <field name="model">product.product</field>
+
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">view.product.template.form</field>
+        <field name="model">product.template</field>
         <field name="priority">112</field>
         <!--Priority greater than 100-->
-        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page
@@ -13,6 +14,14 @@
                     string="Rental Price"
                     invisible="not rental or type != 'product'"
                 >
+                    <group>
+                        <field name="product_value_ids" invisible="1" />
+                        <field
+                            name="product_related_id"
+                            options="{'no_create': True, 'no_create_edit': True}"
+                            invisible="not rental_of_month and not rental_of_day and not rental_of_hour"
+                        />
+                    </group>
                     <group>
                         <group string="Monthly Basis">
                             <field name="rental_of_month" />
@@ -26,7 +35,10 @@
                                 groups="base.group_no_one"
                             />
                             <field name="product_rental_month_id" invisible="1" />
-                            <strong colspan="2" invisible="not product_rental_month_id">
+                            <strong
+                                colspan="2"
+                                invisible="not product_rental_month_id or not product_related_id"
+                            >
                                 Bulk Prices
                             </strong>
                             <field
@@ -38,7 +50,7 @@
                                     'default_applied_on': '0_product_variant',
                                     'default_compute_price': 'fixed',
                                     'default_product_id': product_rental_month_id, 'default_pricelist_id': def_pricelist_id}"
-                                invisible="not rental_of_month or not product_rental_month_id"
+                                invisible="not rental_of_month or not product_rental_month_id or not product_related_id"
                                 nolabel="1"
                                 colspan="2"
                             >
@@ -70,19 +82,22 @@
                                 groups="base.group_no_one"
                             />
                             <field name="product_rental_day_id" invisible="1" />
-                            <strong colspan="2" invisible="not product_rental_day_id">
+                            <strong
+                                colspan="2"
+                                invisible="not product_rental_day_id or not product_related_id"
+                            >
                                 Bulk Prices
                             </strong>
                             <field
                                 name="day_scale_pricelist_item_ids"
                                 position="inside"
                                 domain="[('product_id', '=', product_rental_day_id),
-                                            ('pricelist_id', '=', def_pricelist_id)]"
+                                                                        ('pricelist_id', '=', def_pricelist_id)]"
                                 context="{
-                                    'default_applied_on': '0_product_variant',
-                                    'default_compute_price': 'fixed',
-                                    'default_product_id': product_rental_day_id, 'default_pricelist_id': def_pricelist_id}"
-                                invisible="not rental_of_day or not product_rental_day_id"
+                                                                'default_applied_on': '0_product_variant',
+                                                                'default_compute_price': 'fixed',
+                                                                'default_product_id': product_rental_day_id, 'default_pricelist_id': def_pricelist_id}"
+                                invisible="not rental_of_day or not product_rental_day_id or not product_related_id"
                                 nolabel="1"
                                 colspan="2"
                             >
@@ -114,19 +129,22 @@
                                 groups="base.group_no_one"
                             />
                             <field name="product_rental_hour_id" invisible="1" />
-                            <strong colspan="2" invisible="not product_rental_hour_id">
+                            <strong
+                                colspan="2"
+                                invisible="not product_rental_hour_id or not product_related_id"
+                            >
                                 Bulk Prices
                             </strong>
                             <field
                                 name="hour_scale_pricelist_item_ids"
                                 position="inside"
                                 domain="[('product_id', '=', product_rental_hour_id),
-                                            ('pricelist_id', '=', def_pricelist_id)]"
+                                                                        ('pricelist_id', '=', def_pricelist_id)]"
                                 context="{
-                                    'default_applied_on': '0_product_variant',
-                                    'default_compute_price': 'fixed',
-                                    'default_product_id': product_rental_hour_id, 'default_pricelist_id': def_pricelist_id}"
-                                invisible="not rental_of_hour or not product_rental_hour_id"
+                                                                'default_applied_on': '0_product_variant',
+                                                                'default_compute_price': 'fixed',
+                                                                'default_product_id': product_rental_hour_id, 'default_pricelist_id': def_pricelist_id}"
+                                invisible="not rental_of_hour or not product_rental_hour_id or not product_related_id"
                                 nolabel="1"
                                 colspan="2"
                             >

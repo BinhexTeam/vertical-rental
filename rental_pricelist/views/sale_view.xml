@@ -53,7 +53,7 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath
-                expr="//group[@id='rental_times']//label[@for='product_uom_qty']"
+                expr="//group[@id='rental_times']//field[@name='product_uom_qty']"
                 position="before"
             >
                 <label for="number_of_time_unit" string="Time" />
