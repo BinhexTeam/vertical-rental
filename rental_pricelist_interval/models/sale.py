@@ -111,10 +111,11 @@ class SaleOrderLine(models.Model):
             res = super()._get_product_rental_uom_ids()
         return res
 
-    @api.onchange("product_id")
-    def product_id_change(self):
+    @api.onchange("product_id", "rental_qty")
+    def rental_product_id_change(self):
+        res = super().rental_product_id_change()
+        self._update_interval_price()
         uom_interval = self.env.ref("rental_pricelist_interval.product_uom_interval")
-        res = super().product_id_change()
         if (
             self.order_id.pricelist_id.is_interval_pricelist
             and self.product_id
@@ -135,12 +136,6 @@ class SaleOrderLine(models.Model):
                         self.product_uom = uom_ids[0]
         return res
 
-    @api.onchange("product_id", "rental_qty")
-    def rental_product_id_change(self):
-        res = super().rental_product_id_change()
-        self._update_interval_price()
-        return res
-
     @api.onchange("rental_qty", "number_of_time_unit", "product_id")
     def rental_qty_number_of_days_change(self):
         res = super().rental_qty_number_of_days_change()
@@ -148,14 +143,14 @@ class SaleOrderLine(models.Model):
         return res
 
     @api.onchange("product_uom", "product_uom_qty")
-    def product_uom_change(self):
-        res = super().product_uom_change()
+    def _onchange_product_uom(self):
+        res = super()._onchange_product_uom()
         self._update_interval_price()
         return res
 
     @api.onchange("start_date", "end_date", "product_uom")
-    def onchange_start_end_date(self):
-        res = super().onchange_start_end_date()
+    def _onchange_start_end_date(self):
+        res = super()._onchange_start_end_date()
         if self.start_date and self.end_date:
             self._update_interval_price()
         return res
